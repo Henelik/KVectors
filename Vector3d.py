@@ -20,9 +20,12 @@ class Vector3d():
 		return self.tail.distance(self.head)
 
 	def normalize(self):
-		return(self//self.magnitude())
+		return self//self.magnitude()
 
-	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents divisions between objects and ints
+	def angleBetween(self, other): # find the angle between this and another vector in radians
+		return math.acos((self*other)/(self.magnitude()*other.magnitude()))
+
+	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents dividing objects by ints
 		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.head-self.tail))+self.tail)
 
 	def __div__(self, num):
@@ -31,7 +34,9 @@ class Vector3d():
 	def __mul__(self, other): # dot product
 		if type(other) in (int, float):
 			return Vector3d(self.tail, Point3d(tuple(comp*other for comp in self.head-self.tail))+self.tail)
-		return sum(x*y for y in self.head-self.tail for x in other.head-other.tail)
+		a = self.head-self.tail
+		b = other.head-other.tail
+		return sum(a[i]*b[i] for i in range(3))
 
 	def __pow__(self, other): # cross product
 		a = self.head-self.tail
@@ -69,6 +74,7 @@ if __name__ == "__main__":
 		(test*2).magnitude()
 		test*test2 # dot product
 		test**test2 # cross product
+		assert test.angleBetween(test2) == test2.angleBetween(test)
 	print("Test time was " + str(time.time()-t) + " seconds.")
 	
 # Sample run:
