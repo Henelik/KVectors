@@ -19,6 +19,9 @@ class Vector3d():
 	def magnitude(self):
 		return self.tail.distance(self.head)
 
+	def center(self):
+		return self.head-self.tail
+
 	def normalize(self):
 		return self//self.magnitude()
 
@@ -26,21 +29,21 @@ class Vector3d():
 		return math.acos((self*other)/(self.magnitude()*other.magnitude()))
 
 	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents dividing objects by ints
-		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.head-self.tail))+self.tail)
+		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.center()))+self.tail)
 
 	def __div__(self, num):
-		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.head-self.tail))+self.tail)
+		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.center()))+self.tail)
 
 	def __mul__(self, other): # dot product
 		if type(other) in (int, float):
-			return Vector3d(self.tail, Point3d(tuple(comp*other for comp in self.head-self.tail))+self.tail)
-		a = self.head-self.tail
-		b = other.head-other.tail
+			return Vector3d(self.tail, Point3d(tuple(comp*other for comp in self.center()))+self.tail)
+		a = self.center()
+		b = other.center()
 		return sum(a[i]*b[i] for i in range(3))
 
 	def __pow__(self, other): # cross product
-		a = self.head-self.tail
-		b = other.head-other.tail
+		a = self.center()
+		b = other.center()
 		return Vector3d(Point3d(0, 0, 0), Point3d([a[1]*b[2]-a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]]))
 
 	def __repr__(self):
