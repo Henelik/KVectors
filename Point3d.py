@@ -13,7 +13,7 @@ class Point3d():
 	def distance(self, other):
 		if type(other) != Point3d:
 			raise(TypeError)
-		return math.sqrt(sum(comp**2 for comp in self+other))
+		return math.sqrt(sum(comp**2 for comp in self-other))
 
 	def __add__(self, other):
 		return Point3d(self.values[0] + other.values[0], self.values[1] + other.values[1], self.values[2] + other.values[2])

@@ -15,7 +15,7 @@ class Vector3d():
 		else: raise(TypeError)
 
 	def magnitude(self):
-		return(math.sqrt(sum(comp**2 for comp in self.head-self.tail)))
+		return self.tail.distance(self.head)
 
 	def normalize(self):
 		return(self.divide(self.magnitude()))
@@ -38,13 +38,13 @@ if __name__ == "__main__":
 	head = Point3d(3, 4, 7)
 	test = Vector3d(tail, head)
 	test2 = Vector3d()
-	print(test*test2)
-	#print("Created " + str(test))
-	#print("The magnitude is " + str(test.magnitude())) # This should return sqrt(3), or 1.7320508075688772
-	#print("The normalized vector is: " + str(test.normalize())) # should return a unit vector
-	#print("The normalized vector's magnitude is " + str(test.normalize().magnitude())) # should return 1.0, the magnitude of a unit vector
-	#print("Double the original vector is " + str(test.multiply(2)))
-	#print("The double vector's magnitude is " + str(test.multiply(2).magnitude()))
+	#print(test*test2)
+	print("Created " + str(test))
+	print("The magnitude is " + str(test.magnitude())) # This should return sqrt(3), or 1.7320508075688772
+	print("The normalized vector is: " + str(test.normalize())) # should return a unit vector
+	print("The normalized vector's magnitude is " + str(test.normalize().magnitude())) # should return 1.0, the magnitude of a unit vector
+	print("Double the original vector is " + str(test.multiply(2)))
+	print("The double vector's magnitude is " + str(test.multiply(2).magnitude()))
 	
 # Sample run:
 #
