@@ -1,6 +1,7 @@
 import Point3d
 import math
 from random import randrange
+import time
 
 Point3d = Point3d.Point3d
 
@@ -33,7 +34,9 @@ class Vector3d():
 		return sum(x*y for y in self.head-self.tail for x in other.head-other.tail)
 
 	def __pow__(self, other): # cross product
-		pass
+		a = self.head-self.tail
+		b = other.head-other.tail
+		return Vector3d(Point3d(0, 0, 0), Point3d([a[1]*b[2]-a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]]))
 
 	def __repr__(self):
 		return "Vector3d object: "+str(self.tail)+" to "+str(self.head)
@@ -52,6 +55,7 @@ if __name__ == "__main__":
 	print("The double vector's magnitude is " + str((test*2).magnitude()))
 	print("Test dot product: " + str(test*test2))
 
+	t = time.time()
 	for i in range(1000): # for performance test purposes.  Set range to 0 to disable.
 		tail = Point3d(randrange(-1000, 1000), randrange(-1000, 1000), randrange(-1000, 1000))
 		head = Point3d(randrange(-1000, 1000), randrange(-1000, 1000), randrange(-1000, 1000))
@@ -65,6 +69,7 @@ if __name__ == "__main__":
 		(test*2).magnitude()
 		test*test2 # dot product
 		test**test2 # cross product
+	print("Test time was " + str(time.time()-t) + " seconds.")
 	
 # Sample run:
 #
