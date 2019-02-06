@@ -5,9 +5,9 @@ class Point3d():
 		if len(args) == 0:
 			self.values = [0, 0, 0]
 		elif len(args) == 1:
-			self.values = args[0]
+			self.values = list(args[0]) # convert to list to support assignment
 		elif len(args) == 3:
-			self.values = args
+			self.values = list(args) # convert to list to support assignment
 		else: raise(TypeError)
 
 	def distance(self, other):
@@ -22,7 +22,7 @@ class Point3d():
 		return Point3d(self.values[0] - other.values[0], self.values[1] - other.values[1], self.values[2] - other.values[2])
 
 	def __repr__(self):
-		return str(tuple(self.values))
+		return str(tuple(self.values)) # cast to tuple before string so parenthesis are used
 
 	def __getitem__(self, key):
 		return self.values[key]
