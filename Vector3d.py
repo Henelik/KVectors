@@ -1,5 +1,6 @@
 import Point3d
 import math
+from random import randrange
 
 Point3d = Point3d.Point3d
 
@@ -18,16 +19,21 @@ class Vector3d():
 		return self.tail.distance(self.head)
 
 	def normalize(self):
-		return(self.divide(self.magnitude()))
+		return(self//self.magnitude())
 
-	def multiply(self, num):
-		return Vector3d(self.tail, Point3d(tuple(comp*num for comp in self.head-self.tail))+self.tail)
+	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents divisions between objects and ints
+		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.head-self.tail))+self.tail)
 
-	def divide(self, num):
+	def __div__(self, num):
 		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.head-self.tail))+self.tail)
 
 	def __mul__(self, other): # dot product
+		if type(other) in (int, float):
+			return Vector3d(self.tail, Point3d(tuple(comp*other for comp in self.head-self.tail))+self.tail)
 		return sum(x*y for y in self.head-self.tail for x in other.head-other.tail)
+
+	def __pow__(self, other): # cross product
+		pass
 
 	def __repr__(self):
 		return "Vector3d object: "+str(self.tail)+" to "+str(self.head)
@@ -38,13 +44,27 @@ if __name__ == "__main__":
 	head = Point3d(3, 4, 7)
 	test = Vector3d(tail, head)
 	test2 = Vector3d()
-	#print(test*test2)
 	print("Created " + str(test))
 	print("The magnitude is " + str(test.magnitude())) # This should return sqrt(3), or 1.7320508075688772
 	print("The normalized vector is: " + str(test.normalize())) # should return a unit vector
 	print("The normalized vector's magnitude is " + str(test.normalize().magnitude())) # should return 1.0, the magnitude of a unit vector
-	print("Double the original vector is " + str(test.multiply(2)))
-	print("The double vector's magnitude is " + str(test.multiply(2).magnitude()))
+	print("Double the original vector is " + str(test*2))
+	print("The double vector's magnitude is " + str((test*2).magnitude()))
+	print("Test dot product: " + str(test*test2))
+
+	for i in range(1000): # for performance test purposes.  Set range to 0 to disable.
+		tail = Point3d(randrange(-1000, 1000), randrange(-1000, 1000), randrange(-1000, 1000))
+		head = Point3d(randrange(-1000, 1000), randrange(-1000, 1000), randrange(-1000, 1000))
+		test = Vector3d(tail, head)
+		str(test) # representation test
+		test.magnitude() # This should return sqrt(3), or 1.7320508075688772
+		test.normalize() # should return a unit vector
+		test.normalize().magnitude() # should return 1.0, the magnitude of a unit vector
+		test*2 # lengthen
+		test//2 # shorten
+		(test*2).magnitude()
+		test*test2 # dot product
+		test**test2 # cross product
 	
 # Sample run:
 #
