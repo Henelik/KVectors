@@ -16,10 +16,10 @@ class Point3d():
 		return math.sqrt(sum(comp**2 for comp in self-other))
 
 	def __add__(self, other):
-		return Point3d(self.values[0] + other.values[0], self.values[1] + other.values[1], self.values[2] + other.values[2])
+		return Point3d(self[i]+other[i] for i in range(3))
 
 	def __sub__(self, other):
-		return Point3d(self.values[0] - other.values[0], self.values[1] - other.values[1], self.values[2] - other.values[2])
+		return Point3d(self[i]-other[i] for i in range(3))
 
 	def __repr__(self):
 		return str(tuple(self.values)) # cast to tuple before string so parenthesis are used
@@ -33,4 +33,5 @@ class Point3d():
 
 if __name__ == "__main__":
 	test = Point3d(3, 4, 7)
-	print(test) # prints the point's representation: "(3, 4, 7)"
+	test2 = Point3d(5, 1, 8)
+	print(test+test2) # prints the point's representation: "(3, 4, 7)"

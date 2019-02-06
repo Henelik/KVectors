@@ -85,4 +85,5 @@ if __name__ == "__main__":
 #The normalized vector's magnitude is 1.0
 #Double the original vector is Vector3d object: (5, 2, 6) to (1, 6, 8)
 #The double vector's magnitude is 6.0
-#[Finished in 0.1s]
+#Test dot product: 1
+#Test time was 0.09694385528564453 seconds.
