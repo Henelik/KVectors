@@ -1,9 +1,7 @@
-import Point3d
+from Point3d import Point3d
 import math
 from random import randrange
 import time
-
-Point3d = Point3d.Point3d
 
 class Vector3d():
 	def __init__(self, *args):
@@ -49,6 +47,16 @@ class Vector3d():
 	def __repr__(self):
 		return "Vector3d object: "+str(self.tail)+" to "+str(self.head)
 
+	def __getitem__(self, key):
+		# Allow numbers to be used to get a point along the vector via the index operator.
+		# 0 returns the tail, 1 returns the head, and any float between returns a point that far along the vector.
+		# If key smaller than 0 or larger than 1, the function will return an extrapolated point.
+		if key == 0: # check to see if we can save performance
+			return self.tail
+		if key == 1: # check to see if we can save performance
+			return self.head
+		return (self.normalize()*self.magnitude()*key).head
+
 
 if __name__ == "__main__":
 	tail = Point3d(5, 2, 6)
@@ -62,6 +70,10 @@ if __name__ == "__main__":
 	print("Double the original vector is " + str(test*2))
 	print("The double vector's magnitude is " + str((test*2).magnitude()))
 	print("Test dot product: " + str(test*test2))
+	print("Index testing:")
+	print("0 (should be tail): " + str(test[0]))
+	print("1 (should be head): " + str(test[1]))
+	print(".5 (should be center point): " + str(test[.5]))
 
 	t = time.time()
 	for i in range(1000): # for performance test purposes.  Set range to 0 to disable.
