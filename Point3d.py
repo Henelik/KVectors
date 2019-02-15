@@ -2,7 +2,7 @@ import math
 
 class Point3d():
 	def __init__(self, *args):
-		if len(args) == 0:
+		if len(args) == 0: # default
 			self.values = [0, 0, 0]
 		elif len(args) == 1:
 			self.values = list(args[0]) # convert to list to support assignment

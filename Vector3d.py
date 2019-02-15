@@ -5,13 +5,14 @@ import time
 
 class Vector3d():
 	def __init__(self, *args):
-		if len(args) == 0:
+		if len(args) == 0: # default
 			self.tail = Point3d(0, 0, 0)
 			self.head = Point3d(1, 1, 1)
 		elif len(args) == 2:
-			if type(args[0]) == Point3d and type(args[1]) == Point3d:
-				self.tail = args[0]
-				self.head = args[1]
+			# Cast the args to points for safety
+			# They could be 3-member tuples or lists, or points, but casting ensures we know the data type which is stored
+			self.tail = Point3d(args[0])
+			self.head = Point3d(args[1])
 		else: raise(TypeError)
 
 	def magnitude(self):
@@ -25,6 +26,9 @@ class Vector3d():
 
 	def angleBetween(self, other): # find the angle between this and another vector in radians
 		return math.acos((self*other)/(self.magnitude()*other.magnitude()))
+
+	def isCoplanar(self, item): # find out if the point or vector is coplanar with this one
+		pass
 
 	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents dividing objects by ints
 		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.center()))+self.tail)
