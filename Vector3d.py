@@ -9,10 +9,12 @@ class Vector3d():
 			self.tail = Point3d(0, 0, 0)
 			self.head = Point3d(1, 1, 1)
 		elif len(args) == 2:
-			# Cast the args to points for safety
-			# They could be 3-member tuples or lists, or points, but casting ensures we know the data type which is stored
-			self.tail = Point3d(args[0])
-			self.head = Point3d(args[1])
+			if type(args[0]) == Point3d and type(args[1]) == Point3d:
+				self.tail = args[0]
+				self.head = args[1]
+			else:
+				self.tail = Point3d(args[0])
+				self.head = Point3d(args[1])
 		else: raise(TypeError)
 
 	def magnitude(self):
@@ -29,6 +31,12 @@ class Vector3d():
 
 	def isCoplanar(self, item): # find out if the point or vector is coplanar with this one
 		pass
+
+	def __add__(self, item): # offset the vector by the given tuple/point
+		return Vector3d(self.tail+item, self.head+item)
+
+	def __sub__(self, item):
+		return Vector3d(self.tail-item, self.head-item)
 
 	def __floordiv__(self, num): # Floor division operator is used because of a 3.x Python "feature" that prevents dividing objects by ints
 		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.center()))+self.tail)
