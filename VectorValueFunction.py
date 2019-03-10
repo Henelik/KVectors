@@ -35,22 +35,52 @@ class VectorValueFunction3d(): # A function which takes a scalar and returns a v
 				zTemp = integrate(zTemp, t)
 			return VectorValueFunction3d(xTemp, yTemp, zTemp)
 
-	def Evaluate(self, t):
-		return Point3d(self.xSymbol, self.ySymbol, self.zSymbol)
+	def evaluate(self, value):
+		if type(self.xSymbol) == int or type(self.xSymbol) == float:
+			xTemp = self.xSymbol
+		else:
+			xTemp = self.xSymbol.evalf(5, subs={t: value})
 
-	def TangentVector(self, t):
+		if type(self.ySymbol) == int or type(self.ySymbol) == float:
+			yTemp = self.ySymbol
+		else:
+			yTemp = self.ySymbol.evalf(5, subs={t: value})
+
+		if type(self.zSymbol) == int or type(self.zSymbol) == float:
+			zTemp = self.zSymbol
+		else:
+			zTemp = self.zSymbol.evalf(5, subs={t: value})
+
+		return Point3d(xTemp, yTemp, zTemp)
+
+	def tangentVector(self, value): # find the non-unit tangent vector at the given value
+		if type(self.xSymbol) == int or type(self.xSymbol) == float:
+			xTail = self.xSymbol
+		else:
+			xTail = self.xSymbol.evalf(5, subs={t: value})
+
+		if type(self.ySymbol) == int or type(self.ySymbol) == float:
+			yTail = self.ySymbol
+		else:
+			yTail = self.ySymbol.evalf(5, subs={t: value})
+
+		if type(self.zSymbol) == int or type(self.zSymbol) == float:
+			zTail = self.zSymbol
+		else:
+			zTail = self.zSymbol.evalf(5, subs={t: value})
+
+		return Vector3d(Point3d(xTail, yTail, zTail), Point3d(xHead, yHead, zHead))
+
+	def normalVector(self, value):
 		pass
 
-	def NormalVector(self, t):
+	def accelerationVector(self, value):
 		pass
 
-	def AccelerationVector(self, t):
+	def tangentAccelerationVector(self, value):
 		pass
 
-	def TangentAccelerationVector(self, t):
-		pass
-
-	def NormalAccelerationVector(self, t):
+	def normalAccelerationVector(self, time):
 		pass
 
 	def __repr__(self):
@@ -68,3 +98,5 @@ if __name__ == "__main__":
 	print("Integrals:")
 	print(test.integral(1))
 	print(test.integral(2))
+	for i in range(0, 10):
+		print(test.evaluate(i))
