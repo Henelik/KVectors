@@ -20,16 +20,16 @@ class Vector3d():
 	def magnitude(self):
 		return self.tail.distance(self.head)
 
-	def center(self):
+	def center(self): # Return a Point3d "vector" which is at the location of the head of this Vector3d if its tail were at the origin
 		return self.head-self.tail
 
-	def normalize(self):
+	def normalize(self): # Return a copy of this Vector3d, but shortened to unit length
 		return self//self.magnitude()
 
 	def angleBetween(self, other): # find the angle between this and another vector in radians
 		return math.acos((self*other)/(self.magnitude()*other.magnitude()))
 
-	def isCoplanar(self, item): # find out if the point or vector is coplanar with this one
+	def isCoplanar(self, item): # find out if the vector is coplanar with this one
 		pass
 
 	def __add__(self, item): # offset the vector by the given tuple/point
