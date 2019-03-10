@@ -56,26 +56,53 @@ class VectorValueFunction3d(): # A function which takes a scalar and returns a v
 	def tangentVector(self, value): # find the non-unit tangent vector at the given value
 		if type(self.xSymbol) == int or type(self.xSymbol) == float:
 			xTail = self.xSymbol
+			xHead = 0
 		else:
 			xTail = self.xSymbol.evalf(5, subs={t: value})
+			xHead = diff(self.xSymbol, t).evalf(5, subs={t: value})
 
 		if type(self.ySymbol) == int or type(self.ySymbol) == float:
 			yTail = self.ySymbol
+			yHead = 0
 		else:
 			yTail = self.ySymbol.evalf(5, subs={t: value})
+			yHead = diff(self.ySymbol, t).evalf(5, subs={t: value})
 
 		if type(self.zSymbol) == int or type(self.zSymbol) == float:
 			zTail = self.zSymbol
+			zHead = 0
 		else:
 			zTail = self.zSymbol.evalf(5, subs={t: value})
+			zHead = diff(self.zSymbol, t).evalf(5, subs={t: value})
 
-		return Vector3d(Point3d(xTail, yTail, zTail), Point3d(xHead, yHead, zHead))
+		return Vector3d(Point3d(xTail, yTail, zTail), Point3d(xHead+xTail, yHead+yTail, zHead+zTail))
 
-	def normalVector(self, value):
+	def normalVector(self, value): # not yet implemented
 		pass
 
 	def accelerationVector(self, value):
-		pass
+		if type(self.xSymbol) == int or type(self.xSymbol) == float:
+			xTail = self.xSymbol
+			xHead = 0
+		else:
+			xTail = self.xSymbol.evalf(5, subs={t: value})
+			xHead = diff(diff(self.xSymbol, t)).evalf(5, subs={t: value})
+
+		if type(self.ySymbol) == int or type(self.ySymbol) == float:
+			yTail = self.ySymbol
+			yHead = 0
+		else:
+			yTail = self.ySymbol.evalf(5, subs={t: value})
+			yHead = diff(diff(self.ySymbol, t)).evalf(5, subs={t: value})
+
+		if type(self.zSymbol) == int or type(self.zSymbol) == float:
+			zTail = self.zSymbol
+			zHead = 0
+		else:
+			zTail = self.zSymbol.evalf(5, subs={t: value})
+			zHead = diff(diff(self.zSymbol, t)).evalf(5, subs={t: value})
+
+		return Vector3d(Point3d(xTail, yTail, zTail), Point3d(xHead+xTail, yHead+yTail, zHead+zTail))
 
 	def tangentAccelerationVector(self, value):
 		pass
@@ -92,11 +119,17 @@ if __name__ == "__main__":
 	zSym = 20
 	test = VectorValueFunction3d(xSym, ySym, zSym)
 	print(test)
+	print()
 	print("Derivatives:")
 	print(test.derivative(1))
 	print(test.derivative(2))
+	print()
 	print("Integrals:")
 	print(test.integral(1))
 	print(test.integral(2))
-	for i in range(0, 10):
-		print(test.evaluate(i))
+	print()
+	print("Tangent vector:")
+	print(test.tangentVector(5))
+	print(test.accelerationVector(5))
+	#for i in range(0, 10):
+	#	print(test.evaluate(i))
