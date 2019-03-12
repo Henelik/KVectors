@@ -44,7 +44,7 @@ class Vector3d():
 	def __div__(self, num):
 		return Vector3d(self.tail, Point3d(tuple(comp/num for comp in self.center()))+self.tail)
 
-	def __mul__(self, other): # dot product
+	def __mul__(self, other): # dot product (or scale)
 		if type(other) in (int, float):
 			return Vector3d(self.tail, Point3d(tuple(comp*other for comp in self.center()))+self.tail)
 		a = self.center()

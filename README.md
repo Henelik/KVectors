@@ -7,6 +7,8 @@ Implemented classes include Point3d, Vector3d, Plane3d, and VectorValueFunction3
 # Dependencies
 Sympy and Python 3.6
 
+To install sympy, enter "pip install sympy" into a command line.
+
 # Planned features:
 - Vector3d.parallel(Vector3d) function to see if the vectors are parallel.
 - Vector3d.perpendicular(Vector3d) function to see if the vectors are perpendicular.
