@@ -8,7 +8,7 @@ class Plane3d():
 		# The tail of the vector is a point in the plane
 		# The centered normal is what is regularly the normal vector (really a point)
 		if len(args) == 0: # default plane is y/z axis
-			self.normal = Vector3d((0, 0, 0), (1, 0, 0))
+			self.normal = Vector3d((-2, 7, 11), (7, 4, -5))
 		elif len(args) == 2: # If we were given 2 points (for a normal vector)
 			self.normal = Vector3d(args[0], args[1])
 		elif len(args) == 3: # If we were given 3 coplanar points
@@ -22,7 +22,56 @@ class Plane3d():
 			return Vector3d(self.normal.tail, item.head)*self.normal == 0 and Vector3d(self.normal.tail, item.tail)*self.normal == 0
 		else: raise(TypeError)
 
+	def __repr__(self):
+		n = self.normal.center()
+
+		equation = ''
+
+		if n[0] != 0:
+			equation += str(n[0])
+			if self.normal.tail[0] < 0:
+				equation += "(x+" + str(abs(self.normal.tail[0])) + ")"
+			elif self.normal.tail[0] > 0:
+				equation += "(x-" + str(self.normal.tail[0]) + ")"
+			else:
+				equation += "x"
+
+		if n[1] > 0:
+			if equation:
+				equation += " + "
+		elif n[1] < 0:
+			if equation:
+				equation += " - "
+		if n[1] != 0:
+			equation += str(abs(n[1]))
+			if self.normal.tail[1] < 0:
+				equation += "(y+" + str(abs(self.normal.tail[1])) + ")"
+			elif self.normal.tail[1] > 0:
+				equation += "(y-" + str(self.normal.tail[1]) + ")"
+			else:
+				equation += "y"
+
+		if n[2] > 0:
+			if equation:
+				equation += " + "
+		elif n[2] < 0:
+			if equation:
+				equation += " - "
+		if n[2] != 0:
+			equation += str(abs(n[2]))
+			if self.normal.tail[2] < 0:
+				equation += "(z+" + str(abs(self.normal.tail[2])) + ")"
+			elif self.normal.tail[2] > 0:
+				equation += "(z-" + str(self.normal.tail[2]) + ")"
+			else:
+				equation += "z"
+
+		equation += " = 0"
+
+		return "A plane with the equation " + equation
+
 if __name__ == "__main__":
 	test = Plane3d((0, 0, 0), (0, 0, 1), (0, 1, 0))
 	print(Point3d(0, 69, 420) in test)
 	print(Vector3d() in  Plane3d())
+	print(Plane3d())
