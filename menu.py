@@ -2,7 +2,8 @@ from Point3d import Point3d
 from Vector3d import Vector3d
 from Plane3d import Plane3d
 from VectorValueFunction import VectorValueFunction3d
-from sympy.abc import t
+from QuadricSurface import QuadricSurface
+from sympy.abc import t, x, y
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication
 
@@ -23,9 +24,11 @@ if __name__ == "__main__":
 	while(True):
 		choice = 0
 		subchoice = 0
+		transformations = standard_transformations + (implicit_multiplication,)
 		testVec = None
 		testPlane = None
 		testVVF = None
+		testSurf = None
 
 		print("Main Menu")
 		print()
@@ -35,6 +38,7 @@ if __name__ == "__main__":
 		print("	2. Vector3d")
 		print("	3. Plane3d")
 		print("	4. VectorValueFunction3d")
+		print("	5. Quadric Surface")
 		choice = eval(input())
 		print()
 		print()
@@ -198,15 +202,18 @@ if __name__ == "__main__":
 			elif subchoice == 4:
 				choice = 0
 		while(choice == 4):
-			transformations = standard_transformations + (implicit_multiplication,)
 			print("Testing Vector Valued Function")
 			print("Stored VVF is " + str(testVVF))
 			print()
 			print("	1. Create Vector Value Function")
 			print("	2. Print derivative of VVF")
 			print("	3. Print integral of VVF")
-			print(" 4. Evaluate at a point")
-			print("	x. Return to main menu")
+			print("	4. Evaluate at a given t")
+			print("	5. Get unit tangent vector at a given t")
+			print("	6. Get unit normal vector at a given t")
+			print("	7. Get velocity vector at a given t")
+			print("	8. Get acceleration vector at a given t")
+			print("	9. Return to main menu")
 			subchoice = eval(input())
 			print()
 			print()
@@ -220,7 +227,57 @@ if __name__ == "__main__":
 			elif subchoice == 3:
 				print(testVVF.integral())
 			elif subchoice == 4:
-				v1 = Point3d(eval(input("Enter a value for t:")))
+				v1 = Point3d(eval(input("Enter a value for t: ")))
 				print()
 				print(testVVF.evaluate(v1))
-
+			elif subchoice == 5:
+				v1 = Point3d(eval(input("Enter a value for t: ")))
+				print()
+				print(testVVF.tangentVector(v1).normalize())
+			elif subchoice == 6:
+				v1 = Point3d(eval(input("Enter a value for t: ")))
+				print()
+				print(testVVF.normalVector(v1).normalize())
+			elif subchoice == 7:
+				v1 = Point3d(eval(input("Enter a value for t: ")))
+				print()
+				print(testVVF.tangentVector(v1))
+			elif subchoice == 8:
+				v1 = Point3d(eval(input("Enter a value for t: ")))
+				print()
+				print(testVVF.accelerationVector(v1))
+			elif subchoice == 9:
+				choice = 0
+		while(choice == 5):
+			print("Testing QuadricSurface")
+			print("Stored surface is " + str(testSurf))
+			print()
+			print("	1. Create a quadric surface to test")
+			print("	2. Print all first and second derivatives of surface")
+			print("	3. Print gradient of surface")
+			print("	4. Print Hessian of surface")
+			print("	5. Get rate of increase at a specified point and direction")
+			print("	6. Return to main menu")
+			subchoice = eval(input())
+			print()
+			print()
+			if subchoice == 1:
+				sym = parse_expr(input("f(x, y) = "), transformations=transformations)
+				testSurf = QuadricSurface(sym)
+			elif subchoice == 2:
+				print("fx(x, y) = " + str(testSurf.fx()))
+				print("fy(x, y) = " + str(testSurf.fy()))
+				print("fxx(x, y) = " + str(testSurf.fxx()))
+				print("fyy(x, y) = " + str(testSurf.fyy()))
+				print("fxy(x, y) = " + str(testSurf.fxy()))
+				print("fyx(x, y) = " + str(testSurf.fyx()))
+			elif subchoice == 3:
+				print(str(testSurf.gradient()))
+			elif subchoice == 4:
+				print(str(testSurf.hessian()))
+			elif subchoice == 5:
+				pos = eval(input("Enter a 2d position (x, y): "))
+				direction = eval(input("Enter a 2d direction (x, y): "))
+				print(testSurf.directionalDerivative(pos[0], pos[1], direction))
+			elif subchoice == 6:
+				choice = 0
