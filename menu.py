@@ -4,6 +4,7 @@ from Plane3d import Plane3d
 from VectorValueFunction import VectorValueFunction3d
 from sympy.abc import t
 from sympy import *
+from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication
 
 def getPointsInput():
 	print("Enter the coordinates for a point (x, y, z):")
@@ -24,6 +25,7 @@ if __name__ == "__main__":
 		subchoice = 0
 		testVec = None
 		testPlane = None
+		testVVF = None
 
 		print("Main Menu")
 		print()
@@ -195,3 +197,30 @@ if __name__ == "__main__":
 					print("No stored plane!  Create a plane first.")
 			elif subchoice == 4:
 				choice = 0
+		while(choice == 4):
+			transformations = standard_transformations + (implicit_multiplication,)
+			print("Testing Vector Valued Function")
+			print("Stored VVF is " + str(testVVF))
+			print()
+			print("	1. Create Vector Value Function")
+			print("	2. Print derivative of VVF")
+			print("	3. Print integral of VVF")
+			print(" 4. Evaluate at a point")
+			print("	x. Return to main menu")
+			subchoice = eval(input())
+			print()
+			print()
+			if subchoice == 1:
+				xSym = parse_expr(input("x(t) = "), transformations=transformations)
+				ySym = parse_expr(input("y(t) = "), transformations=transformations)
+				zSym = parse_expr(input("z(t) = "), transformations=transformations)
+				testVVF = VectorValueFunction3d(xSym, ySym, zSym)
+			elif subchoice == 2:
+				print(testVVF.derivative())
+			elif subchoice == 3:
+				print(testVVF.integral())
+			elif subchoice == 4:
+				v1 = Point3d(eval(input("Enter a value for t:")))
+				print()
+				print(testVVF.evaluate(v1))
+
