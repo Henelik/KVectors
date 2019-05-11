@@ -2,6 +2,7 @@ from Point3d import Point3d
 from Vector3d import Vector3d
 from Plane3d import Plane3d
 from VectorValueFunction import VectorValueFunction3d
+from PotentialFunction3d import PotentialFunction3d
 
 from sympy.abc import x, y, z
 from sympy import *
@@ -59,13 +60,38 @@ class VectorField3d():
 		return Vector3d(h, h+p)
 
 	def curlFunc(self):
-		pass
+		xTemp = diff(self.zSymbol, y) - diff(self.ySymbol, z)
+		yTemp = diff(self.xSymbol, z) - diff(self.zSymbol, x)
+		zTemp = diff(self.ySymbol, x) - diff(self.xSymbol, y)
+		return VectorField3d(xTemp, yTemp, zTemp)
 
 	def curlValue(self, xValue, yValue, zValue):
-		pass
+		return self.curlFunc().evaluate(xValue, yValue, zValue)
 
 	def divergenceFunc(self):
-		pass
+		g = self.gradient()
+		return PotentialFunction3d(g[0]+g[1]+g[2])
 
 	def divergenceValue(self, xValue, yValue, zValue):
-		pass
+		return self.divergenceFunc().evaluate(xValue, yValue, zValue)
+
+	def __getitem__(self, key):
+		if key == 0:
+			return self.xSymbol
+		if key == 1:
+			return self.ySymbol
+		if key == 2:
+			return self.zSymbol
+
+	def __repr__(self):
+		return "Vector Field: <" + str(self.xSymbol) + ", " + str(self.ySymbol) + ", " + str(self.zSymbol) + ">"
+
+	def __iter__(self):
+		return [self.xSymbol, self.ySymbol, self.zSymbol].__iter__()
+
+if __name__ == "__main__":
+	xSym = x**2+y**3
+	ySym = y
+	zSym = 2*z*x
+	test = VectorField3d(xSym, ySym, zSym)
+	print(test.divergenceFunc())
