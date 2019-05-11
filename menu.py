@@ -4,8 +4,9 @@ from Plane3d import Plane3d
 from VectorValueFunction import VectorValueFunction3d
 from QuadricSurface import QuadricSurface
 from VectorField3d import VectorField3d
+from PotentialFunction3d import PotentialFunction3d
 
-from sympy.abc import t, x, y
+from sympy.abc import t, x, y, z
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication
 
@@ -31,6 +32,8 @@ if __name__ == "__main__":
 		testPlane = None
 		testVVF = None
 		testSurf = None
+		testPot = None
+		testField = None
 
 		print("Main Menu")
 		print()
@@ -41,6 +44,8 @@ if __name__ == "__main__":
 		print("	3. Plane3d")
 		print("	4. VectorValueFunction3d")
 		print("	5. Quadric Surface")
+		print("	6. Potential Funtion")
+		print("	7. Vector Field")
 		choice = eval(input())
 		print()
 		print()
@@ -282,4 +287,76 @@ if __name__ == "__main__":
 				direction = eval(input("Enter a 2d direction (x, y): "))
 				print(testSurf.directionalDerivative(pos[0], pos[1], direction))
 			elif subchoice == 6:
+				choice = 0
+		while(choice==6):
+			print("Testing PotentialFunction3d")
+			print("Stored function is " + str(testPot))
+			print()
+			print("	1. Create a potential function to test")
+			print("	2. Print all partial derivatives of potential function")
+			print("	3. Evaluate the potential function at a point")
+			print("	4. Return to main menu")
+			subchoice = eval(input())
+			if subchoice == 1:
+				sym = parse_expr(input("f(x, y, z) = "), transformations=transformations)
+				testPot = PotentialFunction3d(sym)
+			elif subchoice == 2:
+				if testPot:
+					print("Partial x derivative: " + str(testPot.partialDerivative(x)))
+					print("Partial y derivative: " + str(testPot.partialDerivative(y)))
+					print("Partial z derivative: " + str(testPot.partialDerivative(z)))
+			elif subchoice == 3:
+				if testPot:
+					print("Enter the coordinates for a point (x, y, z):")
+					coords = eval(input())
+					print(testPot.evaluate(coords[0], coords[1], coords[2]))
+			elif subchoice == 4:
+				choice = 0
+		while(choice==7):
+			print("Testing VectorField3d")
+			print("Stored field is " + str(testField))
+			print()
+			print("	1. Create a vector field to test")
+			print("	2. Print gradient of field")
+			print("	3. Print anti-gradient of field")
+			print("	4. Evaluate the field at a point")
+			print("	5. Print the curl function of the field")
+			print("	6. Evaluate the curl at a point")
+			print("	7. Print the divergence function of the field")
+			print("	8. Evaluate the divergence at a point")
+			print("	9. Return to main menu")
+			subchoice = eval(input())
+			if subchoice == 1:
+				xSym = parse_expr(input("m(x, y, z) = "), transformations=transformations)
+				ySym = parse_expr(input("N(x, y, z) = "), transformations=transformations)
+				zSym = parse_expr(input("P(x, y, z) = "), transformations=transformations)
+				testField = VectorField3d(xSym, ySym, zSym)
+			elif subchoice == 2:
+				if testField:
+					print(testField.gradient())
+			elif subchoice == 3:
+				if testField:
+					print(testField.antiGradient())
+			elif subchoice == 4:
+				if testField:
+					print("Enter the coordinates for a point (x, y, z):")
+					coords = eval(input())
+					print(testField.evaluate(coords[0], coords[1], coords[2]))
+			elif subchoice == 5:
+				if testField:
+					print(testField.curlFunc())
+			elif subchoice == 6:
+				if testField:
+					print("Enter the coordinates for a point (x, y, z):")
+					coords = eval(input())
+					print(testField.curlValue(coords[0], coords[1], coords[2]))
+			elif subchoice == 7:
+				if testField:
+					print(testField.divergenceFunc())
+			elif subchoice == 8:
+				if testField:
+					print("Enter the coordinates for a point (x, y, z):")
+					coords = eval(input())
+					print(testField.divergenceValue(coords[0], coords[1], coords[2]))
+			elif subchoice == 9:
 				choice = 0
