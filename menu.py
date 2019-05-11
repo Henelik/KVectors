@@ -3,6 +3,8 @@ from Vector3d import Vector3d
 from Plane3d import Plane3d
 from VectorValueFunction import VectorValueFunction3d
 from QuadricSurface import QuadricSurface
+from VectorField3d import VectorField3d
+
 from sympy.abc import t, x, y
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication
